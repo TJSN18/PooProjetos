@@ -1,38 +1,13 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.List;
+
+class Logado{
+    static int index;
+    static String nam;
+}
 
 public class Main {
-    public static int procurarProjeto(String id, ArrayList<Projeto> projeto){
-        int contador = 0;
-        for (Projeto projeto2 : projeto) {
-            if(projeto2.id_projeto == id){
-                break;
-            }
-            else{
-                contador++;
-            }
-        }
-        return contador-1;
-    }
-    public static int procurarAtividade(String id, ArrayList<Atividade> atividade){
-        int contador = 0;
-        for (Atividade atv : atividade) {
-            if(atv.atv_id == id){
-                break;
-            }
-            else{
-                contador++;
-            }
-        }
-        return contador-1;
-    }
-    public static int procurarUsuario(String nome, ArrayList<Usuario> usuario){
-        for (int i = 0; i < usuario.size(); i++) {
-            if (usuario.get(i).nome.equals(nome))
-               return i;
-        }   
-        return -1;
-      }
     public static void main(String[] args) {
         Scanner escan = new Scanner(System.in);
         ArrayList<Usuario> usuario = new ArrayList<Usuario>();
@@ -42,28 +17,40 @@ public class Main {
         int opcao;
 
         String nome, profissao, id, descricao, data_inicio, data_final, coord, procura, status;
-        String tarefa;
+        String tarefa, senha, recuperar;
         double bolsa, periodo_bolsa;
         while(true){
-            System.out.printf("Digite 1 para: criar um usuario, um projeto ou uma atividade\nDigite 2 para: remover: um usuario, um projeto ou uma atividade\nDigite 3 para editar\nDigite 4 para consultar\nDigite 5 para relatorios\nDigite 0 para sair;\n");
+            System.out.printf("Digite 1 para: criar um usuario, recuperar a senha, criar um projeto ou uma atividade\nDigite 2 para: remover: um usuario, um projeto ou uma atividade\nDigite 3 para editar\nDigite 4 para consultar\nDigite 5 para relatorios\nDigite 6 para login\nDigite 7 para deslogar\nDigite 0 para sair;\n");
             opcao = escan.nextInt();
             escan.nextLine();
             if(opcao == 0){
                 break;
             }
             else if(opcao == 1){
-                System.out.printf("Digite 1 para adicionar um usuario!\nDigite 2 para adicionar um projeto!\nDigite 3 para adicionar uma atividade!\n");
+                System.out.printf("Digite 1 para criar login de usuario!\nDigite 2 para recuperar senha\nDigite 3 para adicionar um projeto!\nDigite 4 para adicionar uma atividade!\nDigite 0 para voltar ao menu!\n");
                 opcao = escan.nextInt();
                 escan.nextLine();
-                if(opcao == 1){
-                System.out.println("Digite o nome do usuario:");
-                nome = escan.nextLine();
-                System.out.println("Digite a profissao:");
-                profissao = escan.nextLine();
-                usuario.add(new Usuario(nome,profissao));               
-                
+                if(opcao == 0){
+                    continue;
+                }
+                else if(opcao == 1){
+                    System.out.println("Digite o nome do usuario:");
+                    nome = escan.nextLine();
+                    System.out.println("Digite a senha do usuario:");
+                    senha = escan.nextLine();
+                    System.out.println("Digite um email para recuperaçao da senha:");
+                    recuperar = escan.nextLine();
+                    System.out.println("Digite a profissao:");
+                    profissao = escan.nextLine();
+                    usuario.add(new Usuario(nome,senha,recuperar,profissao));
                 }
                 else if(opcao == 2){
+                    System.out.println("digite o Email de recuperaçao:");
+                    recuperar = escan.nextLine();
+                    Usuario recUsuario = usuario.get(procurarSenha(recuperar, usuario));
+                    recUsuario.recuperarSenha();
+                }                             
+                else if(opcao == 3){
                     System.out.println("Digite um Id para o Projeto:");
                     id = escan.nextLine();
                     System.out.println("Digite uma Descrição para o Projeto:");
@@ -83,7 +70,7 @@ public class Main {
                     projeto.add(new Projeto(id, descricao, data_inicio, data_final, bolsa, periodo_bolsa, coord, status, usuario));
                     
                 }
-                else if(opcao == 3){
+                else if(opcao == 4){
                     System.out.println("Digite um Id para a Atividade:");
                     id = escan.nextLine();
                     System.out.println("Digite uma Descrição para a Atividade:");
@@ -135,14 +122,16 @@ public class Main {
                 }
             }
             else if(opcao == 3){
-                System.out.println("Digite seu nome de Usuario:");
-                nome = escan.nextLine();
-                Usuario desUsuario = usuario.get(procurarUsuario(nome, usuario));
+                if(Logado.index == 0){
+                    System.out.println("Efetue o Login para continuar!");
+                    continue;
+                }
+                Usuario desUsuario = usuario.get(procurarUsuario(Logado.nam, usuario));
                 if(desUsuario.coord == false){
                     System.out.println("Esse usuario nao tem acesso a essas informaçoes!");
                     continue;
                 }
-                else if(desUsuario.coord == true){
+                else if(Logado.index == 1 && desUsuario.coord == true){
                 System.out.println("1 para editar usuario\n2 para editar projeto\n3 para editar atividade\n0 para voltar ao menu!\n");
                 opcao = escan.nextInt();
                 escan.nextLine();
@@ -314,7 +303,81 @@ public class Main {
                 }
             }
         }
+        else if(opcao == 6){
+            Integer verificar = Logado.index;
+                if(verificar == 1){
+                    System.out.println("----Voce ja esta logado!----\n");
+                    continue;
+                }
+                else{
+                System.out.println("Digite o nome do usuario:");
+                nome = escan.nextLine();
+                System.out.println(("Digite a senha do usuario:"));
+                senha = escan.nextLine();
+                login(usuario, nome, senha);
+                if(Logado.index == 1){
+                    System.out.println("Login efetuado!!");
+                }
+            }
+        }
+        else if(opcao == 7){
+            Logado.index = 0;
+            System.out.println("Deslogado com sucesso!\n");
+        }
     }
     escan.close();
 }
+public static int procurarProjeto(String id, ArrayList<Projeto> projeto){
+        int contador = 0;
+        for (Projeto projeto2 : projeto) {
+            if(projeto2.id_projeto == id){
+                break;
+            }
+            else{
+                contador++;
+            }
+        }
+        return contador-1;
+    }
+    public static int procurarAtividade(String id, ArrayList<Atividade> atividade){
+        int contador = 0;
+        for (Atividade atv : atividade) {
+            if(atv.atv_id == id){
+                break;
+            }
+            else{
+                contador++;
+            }
+        }
+        return contador-1;
+    }
+    public static int procurarUsuario(String nome, ArrayList<Usuario> usuario){
+        for (int i = 0; i < usuario.size(); i++) {
+            if (usuario.get(i).nome.equals(nome))
+               return i;
+        }   
+        return -1;
+      }
+      public static int procurarSenha(String recuperar, ArrayList<Usuario> usuario){
+        for (int i = 0; i < usuario.size(); i++) {
+            if (usuario.get(i).recuperar.equals(recuperar))
+               return i;
+        }   
+        return -1;
+      }
+    public static void login(List<Usuario> usuarios,String name,String pass){
+        boolean verificar = false;
+
+        for (Usuario usuario : usuarios) {
+            if(usuario.nome.equalsIgnoreCase(name) && usuario.senha.equalsIgnoreCase(pass)){
+                verificar = true;
+                Logado.index = 1;
+                Logado.nam = name;
+            }
+        }
+        if(verificar == false){
+            System.out.println("Login Incorreto!!");
+            Logado.index = 0;
+        }
+    }
 }
