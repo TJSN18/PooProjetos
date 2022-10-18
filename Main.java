@@ -17,7 +17,7 @@ public class Main {
         int opcao;
 
         String nome, profissao, id, descricao, data_inicio, data_final, coord, procura, status;
-        String tarefa, senha, recuperar;
+        String tarefa, senha, recuperar,nivel;
         double bolsa, periodo_bolsa;
         while(true){
             System.out.printf("Digite 1 para: criar um usuario, recuperar a senha, criar um projeto ou uma atividade\nDigite 2 para: remover: um usuario, um projeto ou uma atividade\nDigite 3 para editar\nDigite 4 para consultar\nDigite 5 para relatorios\nDigite 6 para login\nDigite 7 para deslogar\nDigite 0 para sair;\n");
@@ -42,7 +42,14 @@ public class Main {
                     recuperar = escan.nextLine();
                     System.out.println("Digite a profissao:");
                     profissao = escan.nextLine();
+                    if(profissao.equals("aluno") || profissao.equals("Aluno")){
+                        System.out.println("Digite o Nivel de escolaride(Graduaçao, Mestrado ou Doutorado):");
+                        nivel = escan.nextLine();
+                        usuario.add(new Aluno(nome, senha, profissao, recuperar,nivel));
+                    }
+                    else{
                     usuario.add(new Usuario(nome,senha,recuperar,profissao));
+                    }
                 }
                 else if(opcao == 2){
                     System.out.println("digite o Email de recuperaçao:");
