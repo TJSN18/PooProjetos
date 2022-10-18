@@ -19,7 +19,6 @@ public class Usuario {
         System.out.println("Usuario adicionado com sucesso!");
     }
     public void printarInformacoesuser(){
-        //return "\nNome do usuário: " + this.nome + "\nProfissão do usuário: " + this.profissao + "\nPode ser coordenador: " + (this.coord ? "Sim" : "Não");
         System.out.println("Nome do usuário: " + this.nome);
         System.out.println("Profissão do usuário: " + this.profissao);
         System.out.println("Pode ser coordenador: " + (this.coord ? "Sim" : "Não"));
@@ -31,4 +30,3 @@ public class Usuario {
         
     }
 }
-  
