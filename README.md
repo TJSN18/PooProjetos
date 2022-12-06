@@ -1,8 +1,7 @@
 #Sistema para Gerenciamento de Projetos em uma Universidade!
 
 Code Smells:
- Lazy class: 
-  na subclasse Aluno.
+ Lazy class na subclasse Aluno.
  Smells:
   ```java
   public ArrayList<String> tasks_reali;
