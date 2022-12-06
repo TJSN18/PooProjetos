@@ -3,7 +3,7 @@
 Code Smells:
  Lazy class na subclasse Aluno.
  
- Smells:
+ Smells Primitive Obsession:
   ```java
   public ArrayList<String> tasks_reali;
   ```
