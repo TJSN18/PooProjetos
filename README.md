@@ -19,7 +19,7 @@ Code Smells:
   Lazy class resolvido com adição de 3 novas subclasses.
   ______________________________
   
-  Smells:
+  Smells Middle Man:
   ```java
   if(profissao.equals("professor") || profissao.equals("coordenador") || profissao.equals("Professor") || profissao.equals("Coordenador")){
             coord = true;
