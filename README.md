@@ -37,5 +37,3 @@ Code Smells:
    public boolean getCoord(){
         return (profissao.equals("professor") || profissao.equals("coordenador") || profissao.equals("Professor") || profissao.equals("Coordenador")) ? this.coord == false : this.coord == true ;
     }
-    ```
-    _
