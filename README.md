@@ -1,5 +1,7 @@
-#Sistema para Gerenciamento de Projetos
+#Sistema para Gerenciamento de Projetos em uma Universidade!
 
 Code Smells:
- Nas classes em geral possui um code smells de duplicaçao em printarInformacoes e na Main nas funçoes procurar.
- Lazy class na subclasse Aluno.
+ Dupplicate code:
+  Nas classes em geral possui um code smells de duplicaçao em printarInformacoes e na Main nas funçoes procurar.
+ Lazy class: 
+  na subclasse Aluno.
